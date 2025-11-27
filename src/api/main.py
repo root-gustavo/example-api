@@ -1,6 +1,6 @@
 import sqlite3
 from fastapi import APIRouter, HTTPException, Depends
-from src.api.models import User, UserCreate, UserUpdate
+from src.api.models import User, UserCreate, UserUpdate, UserDelete, MessageResponse
 from config.path import DATABASE
 from src.api.key import get_api_key
 
@@ -152,6 +152,31 @@ def deletar_usuario(user_id: int, api_key: str = Depends(get_api_key)):
         raise HTTPException(404, "Usuário não encontrado")
 
     cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+
+    return {"message": "Usuário removido com sucesso"}
+
+@router.delete(
+    "/users",
+    response_model=MessageResponse,
+    summary="Deletar usuário via body",
+    tags=["Usuários"],
+    description="""
+    Este endpoint é útil quando você prefere enviar o ID no body em vez da URL.
+    """
+)
+def deletar_usuario_body(user: UserDelete, api_key: str = Depends(get_api_key)):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM users WHERE id = ?", (user.id,))
+    if cursor.fetchone() is None:
+        conn.close()
+        raise HTTPException(404, "Usuário não encontrado")
+
+    # Deleta
+    cursor.execute("DELETE FROM users WHERE id = ?", (user.id,))
     conn.commit()
     conn.close()
 

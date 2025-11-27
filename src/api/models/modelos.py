@@ -1,10 +1,8 @@
 from pydantic import BaseModel, Field
 
-
 class User(BaseModel):
     """
     Modelo de usuário retornado pela API.
-
     Inclui ID e todos os dados do usuário armazenados no banco.
     """
 
@@ -25,11 +23,9 @@ class User(BaseModel):
             }
         }
 
-
 class UserCreate(BaseModel):
     """
     Modelo enviado para criar um novo usuário.
-
     Não contém ID, pois o ID é gerado automaticamente pelo banco.
     """
 
@@ -48,11 +44,9 @@ class UserCreate(BaseModel):
             }
         }
 
-
 class UserUpdate(BaseModel):
     """
     Modelo enviado para atualizar parcialmente um usuário.
-
     Todos os campos são opcionais, ideal para requisições PATCH.
     """
 
@@ -68,3 +62,23 @@ class UserUpdate(BaseModel):
                 "telefone": "11944445555"
             }
         }
+
+class UserDelete(BaseModel):
+    """
+    Modelo enviado para deletar um usuário.
+    """
+
+    id: int = Field(..., description="ID único do usuário")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "id": 3
+            }
+        }
+
+class MessageResponse(BaseModel):
+    """
+    Modelo para enviar mensagem
+    """
+    message: str
