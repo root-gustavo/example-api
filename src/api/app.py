@@ -16,4 +16,4 @@ def create_app() -> FastAPI:
     app.include_router(router)
     return app
 
-app = create_app()   # 🔥 ESSA LINHA É OBRIGATÓRIA
+app = create_app()
