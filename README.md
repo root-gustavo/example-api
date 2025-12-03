@@ -66,7 +66,7 @@ Add to: **Header**
 ```bash
 access_token
 ```
-#### VALUE:
+#### **VALUE:**
 ```bash
 my-api-key-test
 ```
